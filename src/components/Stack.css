@@ -1,0 +1,84 @@
+/* number ko animate karne ke liye, taaki mask slot ke transform ke saath smoothly chale */
+@property --stack-shift {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+/* Container board se 0.5x wide (top board offset ki wajah se bahar nikalta hai)
+   aur 16px taller (slot ka top: 8px) */
+.rhs-stack {
+  position: absolute;
+  top: 0;
+  width: calc(var(--rhs-board-size) * 1.5);
+  height: calc(var(--rhs-board-size) + 16px);
+  transition: --stack-shift 0.3s ease;
+}
+
+.rhs-stack-slot {
+  position: absolute;
+  top: 0;
+  width: var(--rhs-board-size);
+  height: var(--rhs-board-size);
+  transition: transform 0.3s ease, opacity 250ms ease;
+  border-radius: 8px;
+}
+
+.rhs-stack-left .rhs-stack-slot  { left: 0; }
+.rhs-stack-right .rhs-stack-slot { right: 0; }
+
+/* LEFT: mask poore stack par, top board ke saath shift hota hai */
+.rhs-stack.rhs-stack-left {
+  left: 0;
+  mask-image: linear-gradient(to right,
+    black calc(var(--rhs-board-size) * (0.3 + var(--stack-shift) / 100) - 30px),
+    transparent calc(var(--rhs-board-size) * (0.7 + var(--stack-shift) / 100)));
+  -webkit-mask-image: linear-gradient(to right,
+    black calc(var(--rhs-board-size) * (0.3 + var(--stack-shift) / 100) - 30px),
+    transparent calc(var(--rhs-board-size) * (0.7 + var(--stack-shift) / 100)));
+}
+
+/* RIGHT: board container ke right B hisse mein baithta hai, isliye 0.5 se shuru */
+.rhs-stack.rhs-stack-right {
+  right: 0;
+  mask-image: linear-gradient(to right,
+    transparent calc(var(--rhs-board-size) * (0.3 - var(--stack-shift) / 100)),
+    black calc(var(--rhs-board-size) * (1.2 - var(--stack-shift) / 100) + 30px));
+  -webkit-mask-image: linear-gradient(to right,
+    transparent calc(var(--rhs-board-size) * (0.3 - var(--stack-shift) / 100)),
+    black calc(var(--rhs-board-size) * (1.2 - var(--stack-shift) / 100) + 30px));
+}
+
+.rhs-stack-slot.is-clear { opacity: 1; }
+
+/* ============ LOCK OVERLAY ============ */
+
+.rhs-stack-lock {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: var(--rhs-lock-bg, rgba(5, 9, 18, 0.88));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.rhs-stack-lock-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--rhs-lock-icon-color, rgba(255, 255, 255, 0.95));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+}
+
+/* Deeper right boards: lock icon visible strip mein */
+.rhs-stack-right .rhs-stack-slot:not(.is-top) .rhs-stack-lock {
+  place-items: center end;
+}
+.rhs-stack-right .rhs-stack-slot:not(.is-top) .rhs-stack-lock-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: calc((var(--stack-gap) - 16px) / 2);
+}

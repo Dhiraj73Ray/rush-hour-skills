@@ -1,0 +1,76 @@
+.rhs-board-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 8px;
+  border-radius: 16px;
+  background: var(--rhs-panel-gradient, linear-gradient(145deg, #1c2536, #0d1420));
+  border: 1px solid var(--rhs-panel-border, rgba(255, 255, 255, 0.06));
+  transition: background 250ms ease, border-color 250ms ease;
+}
+
+.rhs-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--rhs-size, 6), 1fr);
+  border-radius: 11px;
+  background: var(--rhs-tray-bg, #364255);
+  box-shadow: var(--rhs-tray-shadow,
+    inset 0 3px 6px rgba(0, 0, 0, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06));
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  touch-action: none;
+  transition: background 250ms ease, box-shadow 250ms ease;
+}
+
+.rhs-cell-spacer {
+  aspect-ratio: 1;
+  background: transparent;
+}
+
+/* ============ EXIT SLOT ============ */
+
+.rhs-exit-slot {
+  position: absolute;
+  background: linear-gradient(180deg, #ef4444 0%, #dc2626 60%, #b91c1c 100%);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 6;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  animation: rhs-exit-glow 2s ease-in-out infinite;
+}
+
+.rhs-exit-slot-bottom,
+.rhs-exit-slot-top {
+  width: calc(100% / var(--rhs-size, 6) * 0.85);
+  height: 10px;
+}
+
+.rhs-exit-slot-left,
+.rhs-exit-slot-right {
+  width: 12px;
+  height: calc(100% / var(--rhs-size, 6) * 0.85);
+}
+
+.rhs-exit-slot-bottom { bottom: 3px; transform: translate(-50%, 50%); }
+.rhs-exit-slot-top    { top: 3px;    transform: translate(-50%, -50%); }
+.rhs-exit-slot-right  { right: 3px;  transform: translate(50%, -50%); }
+.rhs-exit-slot-left   { left: 3px;   transform: translate(-50%, -50%); }
+
+@keyframes rhs-exit-glow {
+  0%, 100% {
+    opacity: 0.75;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.75),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  }
+}
