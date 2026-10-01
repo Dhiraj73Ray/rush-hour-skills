@@ -1,9 +1,10 @@
 node_modules
 dist
+dist-demo
+tmp
+*.tgz
 .env
 .env.local
 .DS_Store
 *.log
 .vscode
-tmp
-.tgz
