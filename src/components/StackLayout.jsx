@@ -3,8 +3,9 @@ import { Board } from "../engine/index.js";
 import { MiniBoard } from "./MiniBoard.jsx";
 import { Stack } from "./Stack.jsx";
 import "./StackLayout.css";
+import { PUZZLES } from "../constants.js";
 
-export function StackLayout({ puzzles, onSolvePuzzle, theme = "auto" }) {
+export function StackLayout({ puzzles = PUZZLES, onSolvePuzzle, theme = "auto" }) {
   const [activeIndexRaw, setActiveIndex] = useState(0);
   const [solved, setSolved] = useState({});
   const [status, setStatus] = useState("ready");

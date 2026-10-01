@@ -38,7 +38,7 @@ export default function App() {
           </button>
         ))}
       </div> */}
-      <StackLayout puzzles={PUZZLES} theme={theme} />
+      <StackLayout theme={theme} />
     </>
   );
 }

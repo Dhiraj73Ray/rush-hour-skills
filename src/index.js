@@ -1,3 +1,3 @@
-export { PUZZLES, STORAGE_KEY } from './constants.js';
+export { PUZZLES } from './constants.js';
 export { Board } from './engine/index.js';
-export { MiniBoard } from './components/index.js';
+export { StackLayout } from './components/StackLayout.jsx';

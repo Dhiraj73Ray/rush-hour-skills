@@ -1,9 +1,10 @@
+src
+dev
 node_modules
-dist
 .env
-.env.local
 .DS_Store
 *.log
-.vscode
+vite.config.js
+index.html
 tmp
 .tgz

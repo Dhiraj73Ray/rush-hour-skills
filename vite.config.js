@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig(({ command }) => {
+  // DEV — playground
   if (command === 'serve') {
     return {
       plugins: [react()],
@@ -13,6 +14,7 @@ export default defineConfig(({ command }) => {
     };
   }
 
+  // BUILD — library
   return {
     plugins: [react()],
     build: {
@@ -30,8 +32,13 @@ export default defineConfig(({ command }) => {
             'react-dom': 'ReactDOM',
             'react/jsx-runtime': 'jsxRuntime',
           },
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name === 'style.css') return 'style.css';
+            return assetInfo.name;
+          },
         },
       },
+      cssCodeSplit: false,
     },
   };
 });

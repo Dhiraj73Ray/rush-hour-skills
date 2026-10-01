@@ -1,7 +1,7 @@
 {
   "name": "rush-hour-skills",
   "version": "0.1.0",
-  "description": "Rush Hour puzzle as a skills section — solve the puzzle, reveal the skills",
+  "description": "Rush Hour puzzle as a portfolio skills section. Solve the puzzle, reveal the skills.",
   "type": "module",
   "main": "./dist/rush-hour-skills.umd.js",
   "module": "./dist/rush-hour-skills.es.js",
@@ -13,6 +13,7 @@
     "./style.css": "./dist/style.css"
   },
   "files": ["dist"],
+  "sideEffects": ["*.css"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -28,6 +29,23 @@
     "react-dom": "^18.3.1",
     "vite": "^5.4.0"
   },
-  "keywords": ["rush-hour", "puzzle", "skills", "portfolio", "react"],
-  "license": "MIT"
+  "keywords": [
+    "rush-hour",
+    "puzzle",
+    "skills",
+    "portfolio",
+    "react",
+    "game",
+    "carousel"
+  ],
+  "author": "Dhiraj Ray",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhiraj73ray/rush-hour-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dhiraj73ray/rush-hour-skills/issues"
+  },
+  "homepage": "https://rush-hour-skills.vercel.app"
 }
