@@ -6,16 +6,20 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig(({ command }) => {
-  // DEV — playground
-  if (command === 'serve') {
+export default defineConfig(({ command, mode }) => {
+  // DEV or DEMO build — playground app
+  if (command === 'serve' || mode === 'demo') {
     return {
       plugins: [react(), cssInjectedByJsPlugin()],
       server: { port: 5174 },
+      build: {
+        outDir: 'dist-demo',
+        emptyOutDir: true,
+      },
     };
   }
 
-  // BUILD — library
+  // LIBRARY build (default)
   return {
     plugins: [react()],
     build: {
