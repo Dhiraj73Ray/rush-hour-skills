@@ -1,6 +1,6 @@
 {
   "name": "rush-hour-skills",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Rush Hour puzzle as a portfolio skills section. Solve the puzzle, reveal the skills.",
   "type": "module",
   "types": "./index.d.ts",
