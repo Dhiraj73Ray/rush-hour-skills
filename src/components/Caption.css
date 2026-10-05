@@ -1,0 +1,56 @@
+/**
+ * src/components/Caption.css
+ * Colors come from CSS variables set by <StackLayout />.
+ */
+
+.rhs-caption {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  font-size: 10px;
+  color: var(--rhs-muted, #7f8ba5);
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  text-align: center;
+  max-width: 100%;
+  line-height: 1.4;
+}
+
+.rhs-caption-title {
+  color: var(--rhs-text, #edf2ff);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rhs-caption-subtitle {
+  color: var(--rhs-muted, #7f8ba5);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.rhs-caption-index {
+  color: var(--rhs-muted, #7f8ba5);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.rhs-caption-sep {
+  opacity: 0.4;
+  padding: 0 6px;
+  color: var(--rhs-muted, #7f8ba5);
+}
+
+/* Truncate very long titles on tiny screens */
+@media (max-width: 480px) {
+  .rhs-caption-title,
+  .rhs-caption-subtitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 18ch;
+  }
+}

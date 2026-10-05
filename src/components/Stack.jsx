@@ -1,7 +1,33 @@
+/**
+ * src/components/Stack.jsx
+ * ------------------------------------------------------------------
+ * Left or right stack of mini boards (BoardPreview).
+ * - LEFT stack: newest on top, boards shift right as new ones are added
+ * - RIGHT stack: next on top, boards shift left
+ * - Locked (unreachable) boards get a Lock overlay
+ *
+ * Props:
+ *   boards        [{ id, board }]  — required
+ *   side          'left' | 'right' — required
+ *   solved        { [id]: true }
+ *   lockedIds     Set<string> — only used on the right stack
+ *   slots         { lock?: (props) => ReactNode }
+ *   renderPreview (props) => ReactNode — override BoardPreview
+ * ------------------------------------------------------------------
+ */
+
 import { BoardPreview } from './BoardPreview.jsx';
+import { Lock } from './Lock.jsx';
 import './Stack.css';
 
-export function Stack({ boards, side, solved, lockedIds }) {
+export function Stack({
+  boards,
+  side,
+  solved,
+  lockedIds,
+  slots,
+  renderPreview,
+}) {
   const count = boards.length;
   if (count === 0) return null;
 
@@ -9,7 +35,13 @@ export function Stack({ boards, side, solved, lockedIds }) {
   const gapPercent = count > 1 ? Math.min(15, 37.5 / count) : 17.5;
 
   return (
-    <div className={`rhs-stack rhs-stack-${side}`} style={{ '--stack-gap': `${gapPercent}%`,'--stack-shift': (count - 1) * gapPercent, }}>
+    <div
+      className={`rhs-stack rhs-stack-${side}`}
+      style={{
+        '--stack-gap': `${gapPercent}%`,
+        '--stack-shift': (count - 1) * gapPercent,
+      }}
+    >
       {boards.map((item, i) => {
         // z-index: LEFT → newest on top, RIGHT → next on top
         const z = isLeft ? i + 1 : count - i;
@@ -32,41 +64,41 @@ export function Stack({ boards, side, solved, lockedIds }) {
         // No mask + full opacity for top & solved
         const isClear = isTop || isSolved;
 
-        // Lock only for right stack, not-solved
+        // Lock only for right stack, not-solved, and in lockedIds
         const showLock =
-          side === 'right' && lockedIds && lockedIds.has(item.id);
+          side === 'right' &&
+          lockedIds &&
+          lockedIds.has(item.id) &&
+          !isSolved;
+
+        const slotClass =
+          'rhs-stack-slot' +
+          (isClear ? ' is-clear' : '') +
+          (isTop ? ' is-top' : '');
+
+        const previewNode = renderPreview
+          ? renderPreview({ board: item.board, id: item.id, isTop, isSolved })
+          : <BoardPreview board={item.board} />;
+
+        const lockNode = showLock
+          ? slots?.lock
+            ? slots.lock({ id: item.id })
+            : <Lock />
+          : null;
 
         return (
           <div
             key={item.id}
-            className={
-              'rhs-stack-slot' +
-              (isClear ? ' is-clear' : '') +
-              (isTop ? ' is-top' : '')
-            }
+            className={slotClass}
             style={{ zIndex: z, transform: transformStyle }}
           >
-            <BoardPreview board={item.board} />
-
-            {showLock && (
-              <div className="rhs-stack-lock" aria-hidden>
-                <svg
-                  className="rhs-stack-lock-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="4" y="11" width="16" height="10" rx="2" />
-                  <path d="M8 11V7a4 4 0 1 1 8 0v4" />
-                </svg>
-              </div>
-            )}
+            {previewNode}
+            {lockNode}
           </div>
         );
       })}
     </div>
   );
 }
+
+export default Stack;

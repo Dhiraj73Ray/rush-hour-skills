@@ -1,0 +1,49 @@
+/**
+ * src/components/ResetButton.css
+ * Colors come from CSS variables set by <StackLayout />.
+ */
+
+.rhs-reset-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--rhs-btn-border, rgba(255, 255, 255, 0.1));
+  background: var(--rhs-btn-bg, rgba(139, 124, 255, 0.1));
+  color: var(--rhs-text, #edf2ff);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms ease,
+    box-shadow 150ms ease;
+  font-family: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rhs-reset-btn:hover:not(:disabled) {
+  background: var(--rhs-btn-bg-hover, rgba(139, 124, 255, 0.2));
+}
+
+.rhs-reset-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.rhs-reset-btn:focus-visible {
+  outline: 2px solid var(--rhs-accent, #56d9ff);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--rhs-accent, #56d9ff) 25%, transparent);
+}
+
+.rhs-reset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Fallback for browsers without color-mix() */
+@supports not (color: color-mix(in srgb, red, blue)) {
+  .rhs-reset-btn:focus-visible {
+    box-shadow: 0 0 0 4px rgba(86, 217, 255, 0.25);
+  }
+}

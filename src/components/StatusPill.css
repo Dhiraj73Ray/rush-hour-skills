@@ -1,0 +1,29 @@
+/**
+ * src/components/StatusPill.css
+ * Colors come from CSS variables set by <StackLayout />.
+ */
+
+.rhs-status {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--rhs-btn-border, rgba(255, 255, 255, 0.1));
+  background: var(--rhs-btn-bg, rgba(139, 124, 255, 0.1));
+  color: var(--rhs-muted, #7f8ba5);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-align: center;
+  transition: color 200ms ease;
+  font-family: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.rhs-status[data-status='solved'] {
+  color: var(--rhs-success, #48e09b);
+}
+
+.rhs-status[data-status='in-progress'] {
+  color: var(--rhs-accent, #56d9ff);
+}

@@ -1,3 +1,24 @@
+/**
+ * src/components/MiniBoard.jsx
+ * ------------------------------------------------------------------
+ * Active board renderer with drag-to-move cars.
+ *
+ * Props (all optional except `board`):
+ *   board        Board instance (required)
+ *   skills       { A: 'Python', ... }
+ *   revealed     Set<string> of revealed letters
+ *   tick         number — bump to force re-render
+ *   onReveal     (letter) => void
+ *   onMoveStart  () => void
+ *   onSolved     () => void
+ *   onMove       ({ car, steps, state }) => void
+ *   renderBlock  (props) => ReactNode — override car visuals
+ *   disabled     boolean — disable dragging
+ *   animation    { blockMoveMs } — override CSS timing
+ *   ariaLabel    string — for the grid
+ * ------------------------------------------------------------------
+ */
+
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Block } from './Block.jsx';
 import { getCarDragBounds } from '../utils/dragBounds.js';
@@ -5,12 +26,17 @@ import './MiniBoard.css';
 
 export function MiniBoard({
   board,
-  skills,
+  skills = {},
   revealed,
   tick,
   onReveal,
   onMoveStart,
   onSolved,
+  onMove,
+  renderBlock,
+  disabled = false,
+  animation,
+  ariaLabel = 'Rush Hour puzzle board',
 }) {
   const [previewCar, setPreviewCar] = useState(null);
   const [previewOffset, setPreviewOffset] = useState(0);
@@ -20,6 +46,7 @@ export function MiniBoard({
   const dragRef = useRef(null);
   const boardRef = useRef(null);
 
+  // ---- measure cell size, keep blocks aligned ----
   useLayoutEffect(() => {
     if (!boardRef.current) return;
     const el = boardRef.current;
@@ -31,7 +58,9 @@ export function MiniBoard({
     return () => ro.disconnect();
   }, [board]);
 
+  // ---- drag handlers ----
   const handlePointerDown = (e, letter) => {
+    if (disabled) return;
     if (dragRef.current) return;
     e.currentTarget.setPointerCapture(e.pointerId);
 
@@ -70,18 +99,25 @@ export function MiniBoard({
 
     if (previewOffset !== 0) {
       const wasWonBefore = board.isWon();
-      board.move(drag.car, previewOffset);
+      const result = board.move(drag.car, previewOffset);
       forceUpdate((n) => n + 1);
 
-      if (!wasWonBefore && board.isWon()) {
-        onSolved?.();
-      }
+      const isWonNow = board.isWon();
+      if (!wasWonBefore && isWonNow) onSolved?.();
+
+      onMove?.({
+        car: drag.car,
+        steps: previewOffset,
+        status: result?.status ?? 'ok',
+        state: board.getState(),
+      });
     }
     setPreviewCar(null);
     setPreviewOffset(0);
     dragRef.current = null;
   };
 
+  // ---- compute visual positions (drag preview) ----
   const visualCars = useMemo(() => {
     const cars = board.cars;
     if (!previewCar || previewOffset === 0) return cars;
@@ -103,40 +139,59 @@ export function MiniBoard({
       ? { top: `${exitOffsetPct}%` }
       : { left: `${exitOffsetPct}%` };
 
+  const rootStyle = {
+    '--rhs-size': size,
+    ...(animation?.blockMoveMs != null && {
+      '--rhs-block-move-ms': `${animation.blockMoveMs}ms`,
+    }),
+  };
+
+  const renderCar = (letter, car) => {
+    const common = {
+      letter,
+      car,
+      size,
+      cellSize,
+      skillName: skills[letter] || letter,
+      revealed: revealed?.has(letter) ?? false,
+      selected: false,
+      dragging: previewCar === letter,
+      disabled,
+      onPointerDown: (e) => handlePointerDown(e, letter),
+      onPointerMove: handlePointerMove,
+      onPointerUp: handlePointerUp,
+    };
+
+    if (renderBlock) return renderBlock(common);
+    return <Block key={letter} {...common} />;
+  };
+
   return (
-    <div className="rhs-board-frame" style={{ '--rhs-size': size }}>
+    <div className="rhs-board-frame" style={rootStyle}>
       <div
         ref={boardRef}
         className="rhs-board"
+        role="grid"
+        aria-label={ariaLabel}
+        data-disabled={disabled || undefined}
       >
+        {/* invisible spacer grid keeps aspect ratio */}
         {Array.from({ length: size * size }).map((_, i) => (
           <div key={i} className="rhs-cell-spacer" />
         ))}
 
-        {Object.entries(visualCars).map(([letter, car]) => (
-          <Block
-            key={letter}
-            letter={letter}
-            car={car}
-            size={size}
-            cellSize={cellSize}
-            skillName={skills[letter] || letter}
-            revealed={revealed?.has(letter) ?? false}
-            selected={false}
-            dragging={previewCar === letter}
-            onPointerDown={(e) => handlePointerDown(e, letter)}
-            onPointerMove={handlePointerMove}
-            onPointerUp={handlePointerUp}
-          />
-        ))}
+        {Object.entries(visualCars).map(([letter, car]) =>
+          renderCar(letter, car),
+        )}
       </div>
 
-   
-        <div
-  className={`rhs-exit-slot rhs-exit-slot-${board.exit.side}`}
-  style={exitStyle}
-  aria-hidden
-/>
-      </div>
+      <div
+        className={`rhs-exit-slot rhs-exit-slot-${board.exit.side}`}
+        style={exitStyle}
+        aria-hidden
+      />
+    </div>
   );
 }
+
+export default MiniBoard;
