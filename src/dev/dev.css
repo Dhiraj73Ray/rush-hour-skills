@@ -1,5 +1,258 @@
-html, body, #root {
+/**
+ * src/dev/dev.css
+ * Playground chrome only. Not part of the library build.
+ */
+
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- shell ---------- */
+
+.dev-root {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  background: #0a0e18;
+}
+
+@media (max-width: 900px) {
+  .dev-root {
+    grid-template-columns: 1fr;
+  }
+  .dev-panel {
+    position: relative !important;
+    height: auto !important;
+  }
+}
+
+/* ---------- panel ---------- */
+
+.dev-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: #0f1420;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #d5dbe8;
+  font-size: 12px;
+}
+
+.dev-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dev-panel-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.dev-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #56d9ff, #8b7cff);
+  color: #0a0e18;
+  font-weight: 900;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.dev-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dev-section-title {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: #6b7890;
+  text-transform: uppercase;
+}
+
+.dev-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- toggles ---------- */
+
+.dev-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 0;
+  font-size: 12px;
+  color: #b8c2d6;
+  user-select: none;
+}
+
+.dev-toggle input {
+  accent-color: #56d9ff;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.dev-toggle:hover {
+  color: #fff;
+}
+
+/* ---------- text fields ---------- */
+
+.dev-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dev-field-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6b7890;
+  text-transform: uppercase;
+}
+
+.dev-field input {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', Menlo, monospace;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+
+.dev-field input:focus {
+  border-color: #56d9ff;
+}
+
+/* ---------- chips (theme switcher) ---------- */
+
+.dev-btn-row {
+  display: flex;
+  gap: 4px;
+}
+
+.dev-btn-row.wrap {
+  flex-wrap: wrap;
+}
+
+.dev-chip {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: #8a96ad;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 150ms ease;
+}
+
+.dev-chip:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dev-chip.active {
+  background: rgba(86, 217, 255, 0.15);
+  border-color: #56d9ff;
+  color: #56d9ff;
+}
+
+/* ---------- buttons (ref actions) ---------- */
+
+.dev-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d5dbe8;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', Menlo, monospace;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.dev-btn:hover {
+  background: rgba(86, 217, 255, 0.12);
+  border-color: #56d9ff;
+  color: #56d9ff;
+}
+
+.dev-btn:active {
+  transform: scale(0.97);
+}
+
+/* ---------- state pre ---------- */
+
+.dev-pre {
+  margin: 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #a6f0c6;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', Menlo, monospace;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+/* ---------- footer ---------- */
+
+.dev-panel-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 10px;
+  color: #6b7890;
+  text-align: center;
+}
+
+.dev-panel-footer code {
+  background: rgba(86, 217, 255, 0.1);
+  color: #56d9ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', Menlo, monospace;
+}
+
+/* ---------- preview ---------- */
+
+.dev-preview {
+  min-height: 100vh;
+  overflow: auto;
 }
